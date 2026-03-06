@@ -100,7 +100,7 @@ const searchProduct = async (req, res) => {
   try {
     const { name } = req.query;
     const product = await productSchema.find({ name: name });
-    if (product) {
+    if (product.length > 0) {
       res.status(200).json({
         message: "Product found",
         data: product,

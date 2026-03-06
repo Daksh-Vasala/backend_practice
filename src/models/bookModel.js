@@ -4,18 +4,29 @@ const Schema = mongoose.Schema;
 const bookSchema = new Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
 
-  author:{
+  author: {
     type: String,
-    required: true
+    required: true,
   },
 
   price: {
     type: Number,
-    required: true
+    required: true,
   },
-})
+
+  formats: [
+    {
+      type: String,
+    },
+  ],
+
+  language: {
+    type: String,
+    enum: ["English", "Hindi", "Gujarati", "Spanish"],
+  },
+});
 
 module.exports = mongoose.model("books", bookSchema);

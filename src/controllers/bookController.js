@@ -50,6 +50,70 @@ const deleteById = async (req, res) => {
   }
 }
 
+const updateFormat = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatedObject = await bookSchema.findByIdAndUpdate(
+      id,
+      { $push: { formats: req.body.formats } },
+      { returnDocument: "after" },
+    );
+
+    res.status(200).json({
+      message: "Book updated",
+      data: updatedObject,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+      error,
+    });
+  }
+};
+
+const removeFormat = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatedObject = await bookSchema.findByIdAndUpdate(
+      id,
+      { $pull: { formats: req.body.formats } },
+      { returnDocument: "after" },
+    );
+
+    res.status(200).json({
+      message: "Book updated",
+      data: updatedObject,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+      error,
+    });
+  }
+};
+
+const searchBook = async (req, res) => {
+  try {
+    const { title } = req.query;
+    const book = await bookSchema.find({ title });
+    if (book.length > 0) {
+      res.status(200).json({
+        message: "Book found",
+        data: book,
+      });
+    } else {
+      res.json({
+        message: "Book not found",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+      error,
+    });
+  }
+};
+
 module.exports = {
-  getBooks, getBookById, create, deleteById
+  getBooks, getBookById, create, deleteById, updateFormat, removeFormat, searchBook
 }
