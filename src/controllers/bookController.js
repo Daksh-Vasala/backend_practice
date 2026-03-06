@@ -1,54 +1,81 @@
-const bookSchema = require("../models/bookModel.js")
+const bookSchema = require("../models/bookModel.js");
 
 const getBooks = async (req, res) => {
   const books = await bookSchema.find();
   res.status(200).json({
     message: "Data fetched",
-    data: books
-  })
-}
+    data: books,
+  });
+};
 
 const getBookById = async (req, res) => {
   const book = await bookSchema.findById(req.params.id);
-  if(book){
+  if (book) {
     res.status(200).json({
       message: "book found",
-      data: book
-    })
+      data: book,
+    });
   } else {
     res.json({
       message: "book not found",
-    })
+    });
   }
-}
+};
 
 const create = async (req, res) => {
   const book = await bookSchema.create(req.body);
-  if(book){
+  if (book) {
     res.status(201).json({
       message: "book created",
-      data: book
-    })
+      data: book,
+    });
   } else {
     res.json({
       message: "Error in creating book",
-    })
+    });
   }
-}
+};
 
 const deleteById = async (req, res) => {
   const deletedBook = await bookSchema.findByIdAndDelete(req.params.id);
-  if(deletedBook){
+  if (deletedBook) {
     res.status(200).json({
       message: "Book deleted",
-      data: deletedBook
-    })
+      data: deletedBook,
+    });
   } else {
     res.json({
       message: "Error in deleting book",
-    })
+    });
   }
-}
+};
+
+const updateBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updatedBook = await bookSchema.findByIdAndUpdate(id, req.body, {
+      returnDocument: "after",
+      runValidators: true,
+    });
+
+    if (!updatedBook) {
+      return res.status(404).json({
+        message: "Book not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Book updated successfully",
+      data: updatedBook,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+      error,
+    });
+  }
+};
 
 const updateFormat = async (req, res) => {
   try {
@@ -115,5 +142,12 @@ const searchBook = async (req, res) => {
 };
 
 module.exports = {
-  getBooks, getBookById, create, deleteById, updateFormat, removeFormat, searchBook
-}
+  getBooks,
+  getBookById,
+  create,
+  deleteById,
+  updateFormat,
+  removeFormat,
+  searchBook,
+  updateBook
+};

@@ -54,6 +54,33 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updatedProduct = await productSchema.findByIdAndUpdate(id, req.body, {
+      returnDocument: "after",
+      runValidators: true,
+    });
+
+    if (!updatedProduct) {
+      return res.status(404).json({
+        message: "Product not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Product updated successfully",
+      data: updatedProduct,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+      error,
+    });
+  }
+};
+
 const updateColor = async (req, res) => {
   try {
     const id = req.params.id;
@@ -125,5 +152,6 @@ module.exports = {
   deleteProduct,
   updateColor,
   removeColor,
-  searchProduct
+  searchProduct,
+  updateProduct
 };

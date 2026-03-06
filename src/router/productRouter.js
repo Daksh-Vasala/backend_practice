@@ -1,4 +1,4 @@
-const { getAllProducts, getProductById, createProduct, deleteProduct, updateColor, removeColor, searchProduct } = require("../controllers/productController");
+const { getAllProducts, getProductById, createProduct, deleteProduct, updateColor, removeColor, searchProduct, updateProduct } = require("../controllers/productController");
 
 const router = require("express").Router();
 
@@ -7,6 +7,7 @@ router.get("/search", searchProduct);
 router.get("/:id", getProductById);
 router.post("/", createProduct);
 router.delete("/:id", deleteProduct);
+router.put("/:id", updateProduct);
 router.put("/updateColor/:id", updateColor);
 router.put("/removeColor/:id", removeColor);
 
