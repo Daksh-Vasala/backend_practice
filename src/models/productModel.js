@@ -3,11 +3,20 @@ const Schema = mongoose.Schema;
 
 const productSchema = new Schema({
   name: {
-    type: "String",
+    type: String,
   },
   
   price: {
     type: Number,
+  },
+
+  color:[{
+    type: String
+  }],
+
+  size:{
+    enum: ["S", "M", "L", "XL"],
+    type: String
   }
 })
 
